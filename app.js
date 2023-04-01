@@ -3,27 +3,29 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const _ = require('lodash')
 
+const db = require('./connection')
+
 const app = express()
 
 app.use(
     bodyParser.json()
 )
 
-const PORT = process.env || 3000
+const PORT = process.env.PORT || 3000
 
-const connectDB = async () => {
-    try {
-        const conn = await mongoose.connect(process.env.MONGO_URI)
-        console.log(`mongoDB connected: ${conn.connection.host}`);
-    } catch (error) {
-        console.log(error);
-        process.exit(1)
-    }
-}
+// local database
+const dbName ="myrecordDB"
+const mongoUrl = "mongodb://127.0.0.1:27017/"
+
+db.connectDB(mongoUrl,dbName)
+
+app.route("/transaction")
+    .get(async (req, res) => {
+        
+    })
 
 
-
-connectDB().then(() => {
+db.connectDB(mongoUrl,dbName).then(() => {
     app.listen(PORT, () => {
         console.log(`listening on PORT:${PORT}`);
     })
