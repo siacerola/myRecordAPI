@@ -17,7 +17,18 @@ const PORT = process.env.PORT || 3000
 const dbName ="myrecordDB"
 const mongoUrl = "mongodb://127.0.0.1:27017/"
 
-db.connectDB(mongoUrl,dbName)
+db.connectDB(mongoUrl, dbName)
+
+const transactionSchema = {
+    totalAmount: {
+        type: Number,
+        required:true
+    }
+}
+
+const userSchema = {
+    
+}
 
 app.route("/transaction")
     .get(async (req, res) => {
