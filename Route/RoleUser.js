@@ -24,4 +24,13 @@ const roleUserModel = require('../Model/RoleUserModel')
             )
         })
 
+        .delete((req, res) => {
+            const roleId = req.body.roleId
+            roleUserModel.deleteRoleUser(
+                200,
+                roleId,
+                res
+            )
+        })
+
 module.exports= router
