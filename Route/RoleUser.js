@@ -11,8 +11,7 @@ const roleUserModel = require('../Model/RoleUserModel')
                 200,
                 `successfully get all role user`,
                 res
-            )
-            
+            )       
         })
 
         .post((req, res) => {
@@ -29,6 +28,17 @@ const roleUserModel = require('../Model/RoleUserModel')
             roleUserModel.deleteRoleUser(
                 200,
                 roleId,
+                res
+            )
+        })
+
+        .patch((req, res) => {
+            const roleId = req.body.roleId
+            const roleName = _.upperCase(req.body.roleName)
+            roleUserModel.updateRoleUser(
+                200,
+                roleId,
+                roleName,
                 res
             )
         })
