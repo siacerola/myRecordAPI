@@ -68,7 +68,10 @@ const deleteOne = async (
     const option = {
         rawResult:true
     }
-    const deleteRole = await Role.findByIdAndDelete(queryDelete, option).exec()
+    const deleteRole = await Role.findByIdAndDelete(
+        queryDelete,
+        option
+    ).exec()
     
     let deleteStatus=""
     if (deleteRole.value != null) {
@@ -84,10 +87,46 @@ const deleteOne = async (
 }
 
 
+// update sapecific role user
+const findAndUpdate = async (
+    statusCode,
+    idRole,
+    roleName,
+    res
+) => {
+    const queryFind = { _id: idRole }
+    const queryUpdate = {
+        roleName:roleName
+    }
+    const option = {
+        rawResult:true
+    }
+
+    const updateRole = await Role.findOneAndUpdate(
+        queryFind,
+        queryUpdate,
+        option
+    ).exec()
+
+    let updateStatus=""
+    if (updateRole.lastErrorObject.updatedExisting === true) {
+        updateStatus="successfully updated"
+    } else {
+        updateStatus="failed updated"
+    }
+
+    res.status(statusCode).json({
+        message: `${updateStatus}`,
+        statusCode:statusCode
+    })
+}
+
+
 module.exports = {
     insertRoleUser: insertRole,
     findAllRoleUser: findAllRole,
-    deleteRoleUser: deleteOne
+    deleteRoleUser: deleteOne,
+    updateRoleUser:findAndUpdate
 }
 
 
