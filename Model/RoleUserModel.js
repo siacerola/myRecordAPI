@@ -11,19 +11,29 @@ const roleSchema = new Schema({
 
 const Role = mongoose.model("Role", roleSchema)
 
-const newRoleUser = async (roleName) => {
+// insert roleUser
+const newRoleUser = async (
+    statusCode,
+    roleName,
+    res
+) => {
     const roleUser = new Role({
         roleName:roleName
     })
 
     const newRole = await roleUser.save()
+    const saveStatus=""
     if (newRole === roleUser) {
-        console.log(`${roleUser} successfully saved`);
+        saveStatus="successfully to save"
     } else {
-        console.log(`${roleUser} cant be saved`);
+        saveStatus="failed to save"
     }
+    res.status(statusCode).json({
+        message:`${roleUser.roleName} ${saveStatus}`
+    })
 }
 
+// find All Role User
 const findAllRole = async (
     statusCode,
     message,
@@ -42,6 +52,17 @@ const findAllRole = async (
         statusCode:statusCode
     })
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
