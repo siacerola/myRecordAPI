@@ -1,3 +1,4 @@
+const { startCase } = require('lodash')
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 
@@ -5,14 +6,15 @@ const { Schema } = mongoose
 const roleSchema = new Schema({
     roleName: {
         type: String,
-        required:true
+        required: true,
+        unique:true
     }
 })
 
 const Role = mongoose.model("Role", roleSchema)
 
 // insert roleUser
-const newRoleUser = async (
+const insertRole = async (
     statusCode,
     roleName,
     res
@@ -22,16 +24,18 @@ const newRoleUser = async (
     })
 
     const newRole = await roleUser.save()
-    const saveStatus=""
+    let saveStatus=""
     if (newRole === roleUser) {
         saveStatus="successfully to save"
     } else {
         saveStatus="failed to save"
     }
     res.status(statusCode).json({
-        message:`${roleUser.roleName} ${saveStatus}`
+        message: `${roleUser.roleName} ${saveStatus}`,
+        statusCode:statusCode
     })
 }
+
 
 // find All Role User
 const findAllRole = async (
@@ -54,8 +58,37 @@ const findAllRole = async (
 }
 
 
+// delete specific role user
+const deleteOne = async (
+    statusCode,
+    idRole,
+    res
+) => {
+    const queryDelete = {_id:idRole}
+    const option = {
+        rawResult:true
+    }
+    const deleteRole = await Role.findByIdAndDelete(queryDelete, option).exec()
+    
+    let deleteStatus=""
+    if (deleteRole.value != null) {
+        deleteStatus="successfully delete Role"
+    } else {
+        deleteStatus="failed delete Role"
+    }
+
+    res.status(statusCode).json({
+        message: `${deleteRole.value.roleName}: ${deleteStatus}`,
+        statusCode:statusCode
+    })
+}
 
 
+module.exports = {
+    insertRoleUser: insertRole,
+    findAllRoleUser: findAllRole,
+    deleteRoleUser: deleteOne
+}
 
 
 
@@ -103,7 +136,3 @@ const userSchema = new Schema({
 })
 
 
-module.exports = {
-    insertRoleUser: newRoleUser,
-    findAllRoleUser: findAllRole
-}
