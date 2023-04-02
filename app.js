@@ -4,6 +4,8 @@ const mongoose = require('mongoose')
 const _ = require('lodash')
 
 const db = require('./connection')
+const roleUserModel = require('./Model/RoleUserModel')
+const res = require('express/lib/response')
 
 const app = express()
 
@@ -19,21 +21,25 @@ const mongoUrl = "mongodb://127.0.0.1:27017/"
 
 db.connectDB(mongoUrl, dbName)
 
-const transactionSchema = {
-    totalAmount: {
-        type: Number,
-        required:true
-    }
-}
-
-const userSchema = {
-    
-}
 
 app.route("/transaction")
     .get(async (req, res) => {
         
     })
+
+app.route("/role")
+    .get((req, res) => {
+        const roleName = req.body.roleName
+        roleUserModel.insertRoleUser(roleName)
+    })
+    
+    .post((req, res) => {
+    roleUserModel.findAllRoleUser(
+        200,
+        `successfully get all role user`,
+        res
+    )
+})
 
 
 db.connectDB(mongoUrl,dbName).then(() => {
