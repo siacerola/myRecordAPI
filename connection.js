@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const connectDB = async (mongoUrl,dbName) => {
     try {
         // local database
-        const conn = await mongoose.connect(mongoUrl)
+        const conn = await mongoose.connect(`${mongoUrl}${dbName}`)
 
         // cloud atlas database
         // const conn = await mongoose.connect(process.env.MONGO_URI)
