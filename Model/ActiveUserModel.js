@@ -42,7 +42,7 @@ const insertActive = async (
 
 
 module.exports = {
-    insertActiveUser: insertRole
+    insertActiveUser: insertActive
     // findAllActiveUser: findAllRole,
     // deleteActiveUser: deleteOne,
     // updateActiveUser:findAndUpdate
