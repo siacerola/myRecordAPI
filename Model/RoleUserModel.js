@@ -47,8 +47,8 @@ const findAllRole = async (
         roleName: 1,
         _id:0
     }
-    const allRole = await Role.find(findAll,option)
-    // res.send(allRole)
+    const allRole = await Role.find(findAll, option)
+    
     res.status(statusCode).json({
         roleUser:allRole,
         message:message,
