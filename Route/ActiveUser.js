@@ -22,4 +22,25 @@ router.route("/")
         )
     })
 
+    .delete((req, res) => {
+        const idActive = req.body.idActive
+        activeUserModel.deleteActiveUser(
+            200,
+            idActive,
+            res
+        )
+    })
+
+    .patch((req, res) => {
+        const idActive = req.body.idActive
+        const updateActiveName = req.body.updateActiveName
+        activeUserModel.updateActiveUser(
+            200,
+            idActive,
+            updateActiveName,
+            res
+        )
+    })
+
+
 module.exports= router
