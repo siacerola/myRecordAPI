@@ -26,7 +26,7 @@ const insertActive = async (
         activeName:ActiveStatus
     })
 
-    const newActive = activeUser.save()
+    const newActive = await activeUser.save()
 
     let saveStatus = ""
     if (newActive === activeUser) {
@@ -38,6 +38,7 @@ const insertActive = async (
         message: `${activeUser.activeName} ${saveStatus}`,
         statusCode:statusCode
     })
+
 }
 
 
@@ -48,8 +49,7 @@ const findAllAcive = async (
 ) => {
     const queryFind = {}
     const option = {
-        activeName: 1,
-        _id:0
+        __v:0
     }
 
     const allActive = await Active.find(queryFind, option)
@@ -62,10 +62,73 @@ const findAllAcive = async (
 }
 
 
+const deleteOne = async (
+    statusCode,
+    idActive,
+    res
+) => {
+    const queryDelete = { _id: idActive }
+    const option = {
+        rawResult:true
+    }
+
+    const deleteActive = await Active.findByIdAndDelete(
+        queryDelete,
+        option
+    ).exec()
+
+    let deleteStatus = ""
+    if (deleteActive.value != null) {
+        deleteStatus="successfully delete Role"
+    } else {
+        deleteStatus="failed delete Role"
+    }
+
+    res.status(statusCode).json({
+        message: `${deleteActive.value.activeName}: ${deleteStatus}`,
+        statusCode:statusCode
+    })
+    
+}
+
+
+const findAndUpdate = async (
+    statusCode,
+    idActive,
+    updateActiveName,
+    res
+) => {
+
+    const queryFind = { _id: idActive }
+    const queryUpdate = { activeName: updateActiveName }
+    const option = {
+        rawResult:true
+    }
+
+    const updateActive = await Active.findOneAndUpdate(
+        queryFind,
+        queryUpdate,
+        option
+    ).exec()
+
+    let updateStatus = ""
+    if (updateActive.lastErrorObject.updatedExisting === true) {
+        updateStatus="successfully updated"
+    } else {
+        updateStatus="failed updated"
+    }
+
+    res.status(statusCode).json({
+        message: `${updateStatus}`,
+        statusCode:statusCode
+    })
+    
+}
+
+
 module.exports = {
     insertActiveUser: insertActive,
-    findAllActiveUser:findAllAcive
-    // findAllActiveUser: findAllRole,
-    // deleteActiveUser: deleteOne,
-    // updateActiveUser:findAndUpdate
+    findAllActiveUser: findAllAcive,
+    deleteActiveUser: deleteOne,
+    updateActiveUser:findAndUpdate
 }
