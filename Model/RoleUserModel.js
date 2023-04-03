@@ -44,8 +44,7 @@ const findAllRole = async (
 ) => {
     const findAll = {}
     const option = {
-        roleName: 1,
-        _id:0
+        __v:0
     }
     const allRole = await Role.find(findAll, option)
     
