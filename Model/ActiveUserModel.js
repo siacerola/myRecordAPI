@@ -41,8 +41,30 @@ const insertActive = async (
 }
 
 
+const findAllAcive = async (
+    statusCode,
+    message,
+    res
+) => {
+    const queryFind = {}
+    const option = {
+        activeName: 1,
+        _id:0
+    }
+
+    const allActive = await Active.find(queryFind, option)
+    
+    res.status(statusCode).json({
+        activeUser:allActive,
+        message: message,
+        statusCode:statusCode
+    })
+}
+
+
 module.exports = {
-    insertActiveUser: insertActive
+    insertActiveUser: insertActive,
+    findAllActiveUser:findAllAcive
     // findAllActiveUser: findAllRole,
     // deleteActiveUser: deleteOne,
     // updateActiveUser:findAndUpdate
