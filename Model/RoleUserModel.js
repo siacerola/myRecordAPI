@@ -1,8 +1,7 @@
-const { startCase } = require('lodash')
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 
-
+// schema role
 const roleSchema = new Schema({
     roleName: {
         type: String,
@@ -139,12 +138,7 @@ module.exports = {
 
 
 
-const activeUserSchema = new Schema({
-    activeName: {
-        type: String,
-        required:true
-    }
-})
+
 
 const divisionSchema = new Schema({
     divisionName: {
