@@ -31,13 +31,14 @@ const userSchema = new Schema({
     fkDivisionId: {
         type: Schema.Types.ObjectId,
         ref:"Division"
-    },
-    cretatedDate: {
-        type:Date
     }
-})
+},
+    {
+        timestamps:true
+    }
+)
 
-const User = mongoose.model("User", userSchema)
+const User = mongoose.model("User", userSchema,)
 
 const insertOne = async (
     statusCode,
@@ -48,7 +49,6 @@ const insertOne = async (
     roleId,
     activeId,
     divisionId,
-    createdDate,
     res
 ) => {
     const newUser = new User()
@@ -60,7 +60,6 @@ const insertOne = async (
     newUser.fkRoleId = roleId
     newUser.fkActiveId = activeId
     newUser.fkDivisionId = divisionId
-    newUser.cretatedDate = createdDate
     
     const saveUser = await newUser.save()
 
