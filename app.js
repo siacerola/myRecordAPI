@@ -5,6 +5,7 @@ const db = require('./connection')
 
 const RoleRoute = require('./Route/RoleUser')
 const ActiveRoute = require('./Route/ActiveUser')
+const DivisionRoute = require('./Route/DivisionUser')
 
 const app = express()
 
@@ -21,10 +22,10 @@ const mongoUrl = "mongodb://127.0.0.1:27017/"
 
 db.connectDB(mongoUrl, dbName)
 
+
 app.use('/role', RoleRoute)
-
 app.use('/active',ActiveRoute)
-
+app.use('/division',DivisionRoute)
 
 db.connectDB(mongoUrl,dbName).then(() => {
     app.listen(PORT, () => {
