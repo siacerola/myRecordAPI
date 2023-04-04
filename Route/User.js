@@ -27,4 +27,18 @@ router.route('/')
         )
     })
 
+    .get((req, res) => {
+        // userModel.findAllUser(
+        //     200,
+        //     `successfully get user model`,
+        //     res
+        // )
+
+        userModel.findDetailUser(
+            200,
+            `successfully get detail user model`,
+            res
+        )
+    })
+
 module.exports = router
