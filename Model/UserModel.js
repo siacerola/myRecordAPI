@@ -75,6 +75,81 @@ const insertOne = async (
     })
 }
 
+const findAll = async (
+    statusCode,
+    message,
+    res
+) => {
+    const queryFind = {}
+    const option = {
+        __v:0
+    }
+
+    const allUser = await User.find(
+        queryFind,
+        option
+    )
+
+    res.status(statusCode).json({
+        user:allUser,
+        message: message,
+        statusCode:statusCode
+    })
+}
+
+const findAndJoint = async (
+    statusCode,
+    message,
+    res
+) => {
+    const queryFind = {}
+    const queryLookUpRole = {
+        $lookup: {
+            from: 'roles',
+            localField:'fkRoleId',
+            foreignField: '_id',
+            as: 'roleDetail'
+        }
+    }
+    const queryLookUpActive = {
+        $lookup: {
+            from: 'actives',
+            localField:'fkActiveId',
+            foreignField: '_id',
+            as: 'activeDetail'
+        }
+    }
+
+    const queryLookUpDivision = {
+        $lookup: {
+            from: 'divisions',
+            localField:'fkDivisionId',
+            foreignField: '_id',
+            as: 'divisionDetail'
+        }
+    }
+
+    const options = {
+        updatedAt:0,
+        __v:0
+    }
+
+    const findAndJointCollection = await User.aggregate([
+        // queryLookUpRole,
+        queryLookUpActive,
+        queryLookUpDivision
+    ])
+    res.status(statusCode).json(
+        {
+            userDetail: findAndJointCollection,
+            message:message,
+            statusCode:statusCode
+        }
+    )
+}
+
 module.exports = {
-    insertUser:insertOne
+    insertUser: insertOne,
+    findAllUser: findAll,
+    findDetailUser:findAndJoint
 }
