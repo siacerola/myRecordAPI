@@ -25,18 +25,71 @@ const insertDivision = async (
 
     const newDivision = await divisionUser.save()
     let saveStatus=""
-    if (newRole === roleUser) {
+    if (newDivision === divisionUser) {
         saveStatus="successfully to save"
     } else {
         saveStatus="failed to save"
     }
     res.status(statusCode).json({
-        message: `${roleUser.roleName} ${saveStatus}`,
+        message: `${divisionUser.divisionName} ${saveStatus}`,
+        statusCode:statusCode
+    })
+}
+
+
+const findAllDivision = async (
+    statusCode,
+    message,
+    res
+) => {
+    const queryFind = {}
+    const option = {
+        __v:0
+    }
+
+    const allDivision = await Division.find(
+        queryFind,
+        option
+    )
+    
+    res.status(statusCode).json({
+        divisionUser: allDivision,
+        message: message,
+        statusCode:statusCode
+    })
+}
+
+const deleteOne = async (
+    statusCode,
+    idDivision,
+    res
+) => {
+    const queryFind = { _id: idDivision }
+    const option = {
+        rawResult:true
+    }
+
+    const deleteDivision = await Division.findByIdAndDelete(
+        queryFind,
+        option
+    ).exec()
+
+    let deleteStatus=""
+    if (deleteDivision.value != null) {
+        deleteStatus="successfully delete Role"
+    } else {
+        deleteStatus="failed delete Role"
+    }
+
+    res.status(statusCode).json({
+        message: `${deleteDivision.value.divisionName}: ${deleteStatus}`,
         statusCode:statusCode
     })
 }
 
 
 module.exports = {
-    insertDivisionUser:insertDivision
+    insertDivisionUser: insertDivision,
+    findAllDivisionUser: findAllDivision,
+    deleteDivisionUser: deleteOne
 }
