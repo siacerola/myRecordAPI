@@ -139,12 +139,7 @@ module.exports = {
 
 
 
-const divisionSchema = new Schema({
-    divisionName: {
-        type: String,
-        required:true
-    }
-})
+
 
 const userSchema = new Schema({
     userName: {
