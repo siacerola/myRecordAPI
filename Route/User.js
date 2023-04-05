@@ -41,4 +41,13 @@ router.route('/')
         )
     })
 
+    .delete((req, res) => {
+        const userId= req.body.userId
+        userModel.deleteUser(
+            200,
+            userId,
+            res
+        )
+    })
+
 module.exports = router
