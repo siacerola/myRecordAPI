@@ -134,22 +134,65 @@ const findAndJoint = async (
         __v:0
     }
 
-    const findAndJointCollection = await User.aggregate([
-        // queryLookUpRole,
-        queryLookUpActive,
-        queryLookUpDivision
-    ])
-    res.status(statusCode).json(
-        {
-            userDetail: findAndJointCollection,
-            message:message,
-            statusCode:statusCode
-        }
+    const findAndJointTable = await User.find(queryFind,options)
+        .populate('fkRoleId')
+        .populate('fkActiveId')
+        .populate('fkDivisionId')
+        .exec()
+    
+    // res.send(findAndJointTable)
+    
+
+    // const findAndJointCollection = await User.aggregate([
+    //     queryLookUpRole,
+    //     queryLookUpActive,
+    //     queryLookUpDivision
+    // ])
+
+    // res.status(statusCode).json(
+    //     {
+    //         userDetail: findAndJointTable,
+    //         message:message,
+    //         statusCode:statusCode
+    //     }
+    // )
+
+    const lengthData = Object.keys(findAndJointTable).length
+    console.log(lengthData);
+    res.send(findAndJointTable[0].userName)
+}
+
+const deleteOne = async (
+    statusCode,
+    userId,
+    res
+) => {
+    const queryDelete = { _id: userId }
+    const option = {
+        rawResult:true
+    }
+
+    const deleteUser = await User.findByIdAndDelete(
+        queryDelete,
+        option
     )
+
+    let deleteStatus=""
+    if (deleteUser.value != null) {
+        deleteStatus="successfully delete Role"
+    } else {
+        deleteStatus="failed delete Role"
+    }
+
+    res.status(statusCode).json({
+        message: `${deleteUser.value.userName}: ${deleteStatus}`,
+        statusCode:statusCode
+    })
 }
 
 module.exports = {
     insertUser: insertOne,
     findAllUser: findAll,
-    findDetailUser:findAndJoint
+    findDetailUser: findAndJoint,
+    deleteUser : deleteOne
 }
